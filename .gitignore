@@ -1,5 +1,4 @@
 /target
 /src/matrix.rs
 /src/vector.rs
-src/bin/test1.rs
 src/bin/test2.rs
