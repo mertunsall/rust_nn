@@ -6,12 +6,12 @@ use rust_nn::functions::{normal, ones_like, print_matrix, print_vector, matmul, 
 use rust_nn::linear::Linear;
 //use rust_nn::relu::Relu;
 use rust_nn::mseloss::MSELoss;
-use rust_nn::utils::{create_linear_dataset};
+use rust_nn::utils::{create_linear_dataset, get_test_data};
 
 fn main() {
 
     // set up input, batch size, input dim, output dim
-    let batch_size = 300;
+    let batch_size = 500;
     let input_dim = 50;
     let output_dim = 1; 
 
@@ -21,6 +21,8 @@ fn main() {
 
     let noise_std = 0.3;
     let (weight, bias, x, y) = create_linear_dataset(batch_size, input_dim, output_dim, noise_std, &mut rng);
+    let n_test = 50;
+    let (x_test, y_test) = get_test_data(n_test, &weight, &bias, noise_std, &mut rng);
 
     // create the layers and initialize loss
     let mut linear_layer1 = Linear::new(input_dim, output_dim, &mut rng);
@@ -55,6 +57,11 @@ fn main() {
         if i%200 == 0 {
             println!("Epoch: {}", i);
             println!("Loss: {:.2}", loss);
+            println!("");
+
+            let output_test = linear_layer1.forward(&x_test);
+            let loss_test = loss_fn.forward(&output_test, &y_test);
+            println!("Test Loss: {:.2}", loss_test);
             println!("");
         }
     }

@@ -110,6 +110,18 @@ pub fn sum_matrix(a: &Vec<Vec<f64>>, axis: i64) -> Vec<f64> {
 
 }
 
+pub fn squared_loss(y_pred: &Vec<Vec<f64>>, y_true: &Vec<Vec<f64>>) -> f64 {
+    let mut loss = 0.0;
+    let n = y_pred.len();
+    let m = y_pred[0].len();
+    for i in 0..n {
+        for j in 0..m {
+            loss += (y_pred[i][j] - y_true[i][j]).powi(2);
+        }
+    }
+    loss / ((n as f64) * (m as f64))
+}
+
 pub fn ones_like(a: &Vec<Vec<f64>>) -> Vec<Vec<f64>> {
     let n = a.len();
     let m = a[0].len();
