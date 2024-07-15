@@ -122,6 +122,27 @@ pub fn squared_loss(y_pred: &Vec<Vec<f64>>, y_true: &Vec<Vec<f64>>) -> f64 {
     loss / ((n as f64) * (m as f64))
 }
 
+pub fn mul_matrix_by_scalar(a: &Vec<Vec<f64>>, scalar: f64) -> Vec<Vec<f64>> {
+    let n = a.len();
+    let m = a[0].len();
+    let mut result = vec![vec![0.0; m]; n];
+    for i in 0..n {
+        for j in 0..m {
+            result[i][j] = a[i][j] * scalar;
+        }
+    }
+    result
+}
+
+pub fn mul_vec_by_scalar(a: &Vec<f64>, scalar: f64) -> Vec<f64> {
+    let n = a.len();
+    let mut result = vec![0.0; n];
+    for i in 0..n {
+        result[i] = a[i] * scalar;
+    }
+    result
+}
+
 pub fn ones_like(a: &Vec<Vec<f64>>) -> Vec<Vec<f64>> {
     let n = a.len();
     let m = a[0].len();
