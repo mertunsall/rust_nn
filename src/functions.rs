@@ -122,6 +122,25 @@ pub fn squared_loss(y_pred: &Vec<Vec<f64>>, y_true: &Vec<Vec<f64>>) -> f64 {
     loss / ((n as f64) * (m as f64))
 }
 
+pub fn logsumexp(a: &Vec<f64>) -> f64 {
+    let max_val = a.iter().fold(f64::NEG_INFINITY, |acc, &x| acc.max(x));
+    let sum: f64 = a.iter().map(|x| (x - max_val).exp()).sum();
+    max_val + sum.ln()
+}
+
+pub fn crossentropyloss(logits: &Vec<Vec<f64>>, target: &Vec<Vec<f64>>) -> f64 {
+    let n = logits.len();
+    let m = logits[0].len();
+    let mut loss = 0.0;
+    for i in 0..n {
+        let logsumexp_val = logsumexp(&logits[i]);
+        for j in 0..m {
+            loss += - target[i][j] * (logits[i][j] - logsumexp_val);
+        }
+    }
+    loss / (n as f64)
+}
+
 pub fn mul_matrix_by_scalar(a: &Vec<Vec<f64>>, scalar: f64) -> Vec<Vec<f64>> {
     let n = a.len();
     let m = a[0].len();
